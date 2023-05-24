@@ -3,7 +3,7 @@ import styles from "./language.module.css";
 import { useState } from "react";
 
 export default function Language(props) {
-  const {selectedLanguage, setSelectedLanguage} = props.value
+  const [selectedLanguage, setSelectedLanguage] = useState("")
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;
