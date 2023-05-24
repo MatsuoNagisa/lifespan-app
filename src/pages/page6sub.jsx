@@ -4,8 +4,10 @@ import Wave from "react-wavify";
 import { memo, useEffect, useState } from "react";
 import  ModalWindow  from "@/components/Modal";
 import {useStore} from "../components/store"
+import { useRouter } from "next/router";
+
 export default function LifeClock() {
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [language,setLanguage] = useState("")
   const [value, setValue] = useState(null);
   const [birthDay,setBirth] = useState("");
   const [name, setName] = useState("");
@@ -14,14 +16,16 @@ export default function LifeClock() {
   const [time,setTime]  = useState({restYear:"",restDays:"",restHours:"",restMins:"",restSecs:""})
   const {visibility} = useStore()
   const setVisibility = useStore((state) => state.setVisibility);
+  const [isLoaded, setIsLoaded] = useState(false);
 // testをクリックするとuseStoreのsetVisibility関数を呼び出す
   const test = () =>{
     setVisibility()
   }
+  const router = useRouter();
 
 useEffect(() => {
   const language = localStorage.getItem("language");
-  setSelectedLanguage(language);
+  setLanguage(language);
   const storedName = localStorage.getItem("name");
   if (storedName) {
     setName(storedName);
@@ -39,6 +43,7 @@ useEffect(() => {
         const json = await response.json();
         setValue(Math.round(json.value[1][0].value));
         setLoad(false)
+        setIsLoaded(true);// データの取得が完了したことを示すフラグを設定
 
       } catch (error) {
         console.error(error);
@@ -46,15 +51,40 @@ useEffect(() => {
     };
     if(storedNationality){
     fetchData();}
+      //鼓動の効果音
+    const heartImage = document.querySelector(`.${styles.heart_box}`);
+    heartImage.addEventListener("click", handleHeartClick);
+
+    return () => {
+      heartImage.removeEventListener("click", handleHeartClick);
+    };
+
+     //あくびの効果音
+    const womanImage = document.querySelector(`.${styles.girl_box}`);
+    womanImage.addEventListener("click", handleYawnClick);
+
+    return () => {
+      womanImage.removeEventListener("click", handleYawnClick);
+    };
 
   }, []);
 
-  const text = selectedLanguage === "Japanese" ? `${name}の余命は` : `${name}'s remaining life expectancy is`;
-  const Year = selectedLanguage === "Japanese" ? "年" : "year";
-  const day = selectedLanguage === "Japanese" ? "日" : "d";
-  const hour = selectedLanguage === "Japanese" ? "時間" : "h";
-  const minute = selectedLanguage === "Japanese" ? "分" : "m";
-  const second = selectedLanguage === "Japanese" ? "秒" : "s";
+  useEffect(() => {
+    if (isLoaded) {
+      // データが取得された後に条件判定を行う
+      const age = calc();
+      if (age > value) {
+        router.push("/page7");
+      }
+    }
+  }, [isLoaded, value, birthDay]);
+
+  const text = language === "Japanese" ? `${name}の余命は` : `${name}'s remaining life expectancy is`;
+  const Year = language === "Japanese" ? "年" : "year";
+  const day = language === "Japanese" ? "日" : "d";
+  const hour = language === "Japanese" ? "時間" : "h";
+  const minute = language === "Japanese" ? "分" : "m";
+  const second = language === "Japanese" ? "秒" : "s";
 
   const date = new Date()
   const year = date.getFullYear();
@@ -68,7 +98,8 @@ const calc = () => {
   }else{
     return result
   }
-}
+};
+
 
   const height =  ((value - calc())/value) * 100
 
@@ -96,12 +127,12 @@ const calc = () => {
     let restHours = Math.floor(rest/1000/60/60) % 24;
     restHours = `0${restHours}`.slice(-2);
     console.log(`残り${restYear}年 ${restDays} 日 ${restHours} 時間 ${restMins} 分 ${restSecs} 秒`);
-    // const dateSet =[restYear,restDays,restHours,restMins,restSecs]
 
     setTime({ restYear, restDays, restHours, restMins, restSecs });
 
     setYear(restYear)
   }
+
 
   console.log(time)
 useEffect(() => {
@@ -112,7 +143,14 @@ useEffect(() => {
   //触れるなキケン
 }, [load]);
 
-
+const handleHeartClick = () => {
+  const audio = new Audio("./images/Heartbeat.mp3");
+  audio.play();
+};
+const handleYawnClick = () => {
+  const audio = new Audio("./images/yawn.mp3");
+  audio.play();
+};
   return (
     <div className={styles.container}>
       <Head>
@@ -142,7 +180,7 @@ useEffect(() => {
             className={styles.man}
           />
         </div>
-        <div className={styles.heart_box}>
+        <div className={styles.heart_box} onClick={handleHeartClick}>
           <div className={styles.mask_img}>
             <div className={styles.masked}>
               <Wave
@@ -179,7 +217,7 @@ useEffect(() => {
             className={styles.heartbeat}
           />
         </div>
-        <div className={styles.girl_box}>
+        <div className={styles.girl_box} onClick={handleYawnClick}>
           <img src="images/12.png" alt="女性画像" className={styles.girl} />
         </div>
       </div>

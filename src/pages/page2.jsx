@@ -2,14 +2,13 @@ import Message from "@/components/message";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from "./page2.module.css";
-import Router from "next/router";
 
 export default function Nationality(props) {
-  const {selectedLanguage, setSelectedLanguage} = props.value
+  const [language,setLanguage] = useState("")
 
   useEffect(() => {
     const language = localStorage.getItem("language");
-    setSelectedLanguage(language);
+    setLanguage(language);
     console.log(language);
   }, []);
   const [selectedValue, setSelectedValue] = useState("");
@@ -19,18 +18,18 @@ export default function Nationality(props) {
     localStorage.setItem("nationality", selectedValue);
   };
 
-  const select = selectedLanguage === "Japanese" ? "あなたの国籍を選んでください" : "Choose your nationality";
-  const next = selectedLanguage === "Japanese" ? "次へ" : "next";
-  const nationality = selectedLanguage === "Japanese" ? "あなたが育った国は？" : "What is your nationality？";
-  const JPN = selectedLanguage === "Japanese" ? "日本" : "Japan";
-  const CHN = selectedLanguage === "Japanese" ? "中国" : "China";
-  const KOR = selectedLanguage === "Japanese" ? "韓国" : "Korea";
-  const IND = selectedLanguage === "Japanese" ? "インド" : "India";
-  const USA = selectedLanguage === "Japanese" ? "アメリカ" : "America";
-  const CAN = selectedLanguage === "Japanese" ? "カナダ" : "Canada";
-  const COL = selectedLanguage === "Japanese" ? "コロンビア" : "Columbia";
-  const MEX = selectedLanguage === "Japanese" ? "メキシコ" : "Mexico";
-  const PHL = selectedLanguage === "Japanese" ? "フィリピン" : "Philippines";
+  const select = language === "Japanese" ? "あなたの国籍を選んでください" : "Choose your nationality";
+  const next = language === "Japanese" ? "次へ" : "next";
+  const nationality = language === "Japanese" ? "あなたが育った国は？" : "What is your nationality？";
+  const JPN = language === "Japanese" ? "日本" : "Japan";
+  const CHN = language === "Japanese" ? "中国" : "China";
+  const KOR = language === "Japanese" ? "韓国" : "Korea";
+  const IND = language === "Japanese" ? "インド" : "India";
+  const USA = language === "Japanese" ? "アメリカ" : "America";
+  const CAN = language === "Japanese" ? "カナダ" : "Canada";
+  const COL = language === "Japanese" ? "コロンビア" : "Columbia";
+  const MEX = language === "Japanese" ? "メキシコ" : "Mexico";
+  const PHL = language === "Japanese" ? "フィリピン" : "Philippines";
 
   return (
     <div className={styles.container}>

@@ -5,12 +5,12 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 
 export default function DateOfBirth(props) {
-    const {selectedLanguage, setSelectedLanguage} = props.value
-    const text = selectedLanguage === "Japanese" ? "あなたが産まれたのはいつ？" : "When were you bone ?";
-    const next = selectedLanguage === "Japanese" ? "次へ" : "next";
+    const [language,setLanguage] = useState("")
+    const text = language === "Japanese" ? "あなたが産まれたのはいつ？" : "When were you bone ?";
+    const next = language === "Japanese" ? "次へ" : "next";
   useEffect(() => {
     const language = localStorage.getItem("language");
-    setSelectedLanguage(language);
+    setLanguage(language);
     console.log(language);
   }, []);
   const [selectedValue, setSelectedValue] = useState([]);

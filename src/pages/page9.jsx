@@ -3,7 +3,7 @@ import { useEffect, useState,useRef } from "react";
 import styles from "./page9.module.css";
 
 export default function Commendation(props) {
-  const { selectedLanguage, setSelectedLanguage } = props.value;
+  const [language,setLanguage] = useState("")
   const [todos, setTodos] = useState([]);
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
@@ -16,8 +16,8 @@ export default function Commendation(props) {
       const createPetal = () => {
       const petalEl = document.createElement('span');
       petalEl.className = styles.petal;
-      const minSize = 1;
-      const maxSize = 20;
+      const minSize = 10;
+      const maxSize = 15;
       const size = Math.random() * (maxSize + 1 - minSize) + minSize;
       petalEl.style.width = `${size}px`;
       petalEl.style.height = `${size}px`;
@@ -27,14 +27,14 @@ export default function Commendation(props) {
     }
 // 一定時間が経てば花びらを消す
 
-      setInterval(createPetal, 500);
+      setInterval(createPetal, 700);
 
       setTimeout(() => {
       petals.forEach((petal) => petal.remove());
       }, 10000);
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
     const language = localStorage.getItem("language");
-    setSelectedLanguage(language);
+    setLanguage(language);
     const storedTodos = localStorage.getItem("todos");
     if (storedTodos) {
       setTodos(JSON.parse(storedTodos));
@@ -48,12 +48,12 @@ export default function Commendation(props) {
       setDate(storedDate.split("-"));
     }
   }, []);
-  const h1 =
-    selectedLanguage === "Japanese" ? "表彰状" : `certificate of\ncommendation`;
-  const h2 = selectedLanguage === "Japanese" ? "殿" : "";
-  const text1 = selectedLanguage === "Japanese" ? "あなたはやりたいことの" : "";
+
+  const h1 = language=== "Japanese" ? "表彰状" : `certificate of\ncommendation`;
+  const h2 = language === "Japanese" ? "殿" : "";
+  const text1 = language === "Japanese" ? "あなたはやりたいことの" : "";
   const text2 =
-    selectedLanguage === "Japanese"
+    language === "Japanese"
       ? `見事叶えることが出来ました\nあなたの人生を楽しもうとする\n行動力をここにたたえ表彰いたします`
       : `You have made your dreams\ncome true!\nWe hereby commend you for\nyour enjoyment of life and your\ngreat energy!`;
   const splitText2 = text2.split("\n");

@@ -39,7 +39,7 @@
   align-items: center;
 /* 鼓動のアニメーション */
   animation-name: heart_box;
-  animation-duration: 1.5s;/*総時間*/
+  animation-duration: 1.3s;/*総時間*/
   animation-timing-function: ease;/*動き*/
   animation-delay: 0s;/*遅延時間*/
   animation-iteration-count: infinite;/*ループ回数*/

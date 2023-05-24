@@ -13,7 +13,7 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper";
 
 import Language from "./language";
-import Name from "../components/pages/page1";
+import Name from "./page1";
 import Nationality from "./page2";
 import DateOfBirth from "./page3";
 import ToDo from "./page4";

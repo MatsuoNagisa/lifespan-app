@@ -8,15 +8,14 @@ import {gsap} from "gsap";
 
 
 export default function CheckTodos(props) {
-  const {selectedLanguage, setSelectedLanguage} = props.value
+  const [language,setLanguage] = useState("")
   const [todos, setTodos] = useState([]);
   const [isCheckedList, setIsCheckedList] = useState([false, false, false]);
   const [name, setName] = useState("");
 
   useEffect(() => {
     const language = localStorage.getItem("language");
-    setSelectedLanguage(language);
-    console.log(language);
+    setLanguage(language);
     const storedName = localStorage.getItem("name");
     if (storedName) {
       setName(storedName);
@@ -25,8 +24,17 @@ export default function CheckTodos(props) {
     const saveIsCheckedList = JSON.parse(localStorage.getItem('isCheckedList')) || [false, false, false];
     setTodos(savedTodos.slice(0, 3));
     setIsCheckedList(savedTodos.slice(0, 3).map(() => false));
+
+
+    const boyImage = document.querySelector(`.${styles.boy}`);
+    boyImage.addEventListener("click", handleBoyClick);
+
+    return () => {
+      boyImage.removeEventListener("click", handleBoyClick);
+    };
   }, []);
-  const text = selectedLanguage === "Japanese" ? `${name}のやりたいこと` : `What ${name} wants to do`;
+
+  const text = language === "Japanese" ? `${name}のやりたいこと` : `What ${name} wants to do`;
 
 
   const handleClick = (index) => {
@@ -48,15 +56,18 @@ export default function CheckTodos(props) {
     const dateString = `${year}-${month}-${day}`;
     localStorage.setItem('date', dateString);
   };
+
+
+
   const [textIndex, setTextIndex] = useState(0);
-  const texts = ['あああ', 'いいい', 'ううう'];
+  const texts = ['いいことないかな〜', '・・・ねむ。', 'なんとかなるさ', 'ハクナマタタ', 'お腹空いたな〜', 'おやつおやつ♪'];
 
   useEffect(() => {
 
     // タイマーを設定して、30秒ごとにテキストを更新する
     const interval = setInterval(() => {
     setTextIndex((textIndex + 1) % texts.length); // テキストのインデックスを更新し、最後まで行ったら0に戻るようにする
-    }, 6000);
+    }, 7000);
     const square = document.querySelector('#minimessage_box');
   gsap.to(square, {
     duration: 3,
@@ -75,6 +86,10 @@ export default function CheckTodos(props) {
   }, [textIndex, texts.length]);
 
 
+  const handleBoyClick = () => {
+    const audio = new Audio("./images/gacha.mp3");
+    audio.play();
+  };
 
 
 
@@ -111,7 +126,7 @@ export default function CheckTodos(props) {
       </div>
 
       <div className={styles.minicontainer2}>
-        <img src="images/15.png" alt="少年画像" className={styles.boy} />
+        <img src="images/15.png" alt="少年画像" className={styles.boy} onClick={handleBoyClick}/>
         <div className={styles.minimessage_box} id="minimessage_box">
           <p>{texts[textIndex]}</p>
         </div>

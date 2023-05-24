@@ -5,17 +5,16 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import styles from "./page1.module.css";
 
 export default function Name(props) {
-
-  const {selectedLanguage, setSelectedLanguage} = props.value
+  const [language,setLanguage] = useState("")
 
   useLayoutEffect(() => {
     const language = localStorage.getItem("language");
-    setSelectedLanguage(language);
+    setLanguage(language);
     console.log(language);
   }, []);
 
-  const text = selectedLanguage === "Japanese" ? `あなたのお名前\nまたは\nニックネームは？` :`What is your name\nor\nyour nickname？`;
-  const placeholder =  selectedLanguage === "Japanese" ? "お名前を入力してください" : "Enter your name";
+  const text = language === "Japanese" ? `あなたのお名前\nまたは\nニックネームは？` :`What is your name\nor\nyour nickname？`;
+  const placeholder =  language === "Japanese" ? "お名前を入力してください" : "Enter your name";
 
   return (
     <div className={styles.container}>

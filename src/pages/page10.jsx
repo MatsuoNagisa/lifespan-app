@@ -7,20 +7,20 @@ import {gsap} from "gsap";
 import Router from "next/router";
 
 export default function NewToDos() {
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [language,setLanguage] = useState("")
   const [todos, setTodos] = useState([]);
   const elementRef = useRef(null)
   useEffect(() => {
     const language = localStorage.getItem("language");
-    setSelectedLanguage(language);
+    setLanguage(language);
     const savedTodos = JSON.parse(localStorage.getItem("todos")) || [];
     setTodos(savedTodos.slice(0, 3));
 
     gsap.to(elementRef.current, { scale:1.5,repeat:-1,duration:1,yoyo:true,});
   }, []);
-  const text = selectedLanguage === "Japanese" ? `もうあなたは無敵。\nジャンジャン\n新しいことに\nチャレンジ\nしよう！\n飛び込もう！` :
+  const text = language === "Japanese" ? `もうあなたは無敵。\nジャンジャン\n新しいことに\nチャレンジ\nしよう！\n飛び込もう！` :
   `You are now invincible\nLet's try something\nnew !\nLet's dive in !`;
-  const placeholder = selectedLanguage === "Japanese" ? "新しいやりたいこと" : "New thing you want to do";
+  const placeholder = language === "Japanese" ? "新しいやりたいこと" : "New thing you want to do";
   console.log(todos);
   const handleClick = () =>{
     Router.push("/swiper2")

@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import styles from "./page5.module.css";
 
 export default function Look(props) {
-  const {selectedLanguage, setSelectedLanguage} = props.value
+  const [language,setLanguage] = useState("")
 
   useEffect(() => {
     const language = localStorage.getItem("language");
-    setSelectedLanguage(language);
+    setLanguage(language);
   }, []);
-  const text = selectedLanguage === "Japanese" ? "さぁ、あなたに残された時間を\n見てみましょう":
+  const text = language === "Japanese" ? "さぁ、あなたに残された時間を\n見てみましょう":
   `Now, let'ts see how much time is left\nin yours life.\nLet's take a look.` ;
-  const next = selectedLanguage === "Japanese" ? "次へ" : "next";
+  const next = language === "Japanese" ? "次へ" : "next";
   return (
     <div className={styles.container}>
       <Head>
